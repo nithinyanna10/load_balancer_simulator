@@ -1,20 +1,19 @@
 import streamlit as st
 import time
-from shared_state import shared_state
+from shared_state import get_snapshot
 
 st.set_page_config(page_title="Load Balancer Monitor", layout="wide")
-
 st.title("🛡️ Load Balancer Live Monitor")
 placeholder = st.empty()
 
 while True:
-    snapshot = shared_state.get_snapshot()
+    snapshot = get_snapshot()
     if snapshot:
         ports = list(snapshot.keys())
         loads = list(snapshot.values())
 
         with placeholder.container():
-            st.bar_chart(data=loads, x=ports)
+            st.bar_chart(loads)
             st.write("🔄 Updated live every second")
     else:
         st.info("Waiting for traffic...")
